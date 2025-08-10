@@ -10,6 +10,7 @@ const Navbar = () => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -39,7 +40,7 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const close = () => setMenuOpen(false);
+    const close = () => { setMenuOpen(false); setMobileNavOpen(false); };
     window.addEventListener('click', close);
     return () => window.removeEventListener('click', close);
   }, []);
@@ -66,7 +67,10 @@ const Navbar = () => {
         </h1>
         {!onLoginPage && (
           <>
-            <div className="flex gap-6 text-sm font-medium text-slate-700">
+            <button className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md border border-gray-200" onClick={(e)=>{e.stopPropagation(); setMobileNavOpen(o=>!o);}} aria-label="Open menu">
+              <span className="i">≡</span>
+            </button>
+            <div className="hidden md:flex gap-6 text-sm font-medium text-slate-700">
               <Link to="/" className="hover:text-indigo-600 transition-colors">Dashboard</Link>
               <Link to="/transactions" className="hover:text-indigo-600 transition-colors">Transactions</Link>
               <Link to="/goals" className="hover:text-indigo-600 transition-colors">Goals</Link>
@@ -111,6 +115,27 @@ const Navbar = () => {
           </>
         )}
       </div>
+      {/* Mobile nav panel */}
+      {mobileNavOpen && !onLoginPage && (
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="px-4 py-3 space-y-2 text-sm">
+            <Link onClick={()=>setMobileNavOpen(false)} to="/" className="block py-2">Dashboard</Link>
+            <Link onClick={()=>setMobileNavOpen(false)} to="/transactions" className="block py-2">Transactions</Link>
+            <Link onClick={()=>setMobileNavOpen(false)} to="/goals" className="block py-2">Goals</Link>
+            <Link onClick={()=>setMobileNavOpen(false)} to="/split" className="block py-2">Split Bill</Link>
+            <Link onClick={()=>setMobileNavOpen(false)} to="/wishlist" className="block py-2">Wishlist</Link>
+            <Link onClick={()=>setMobileNavOpen(false)} to="/reports" className="block py-2">Reports</Link>
+            {authed ? (
+              <>
+                <Link onClick={()=>setMobileNavOpen(false)} to="/settings" className="block py-2">Profile & Settings</Link>
+                <button onClick={handleLogout} className="w-full text-left py-2 text-red-600">Logout</button>
+              </>
+            ) : (
+              <Link onClick={()=>setMobileNavOpen(false)} to="/login" className="block py-2 text-indigo-600">Login</Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };

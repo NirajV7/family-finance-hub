@@ -70,7 +70,12 @@ const TransactionsPage = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-1 order-1 lg:order-2">
+          <div className="lg:sticky lg:top-24">
+            <AddTransaction />
+          </div>
+        </div>
+        <div className="lg:col-span-2 order-2 lg:order-1">
           <div className="p-4 bg-white rounded-lg shadow mb-4">
             <h3 className="font-bold mb-4">Filter Transactions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -120,11 +125,6 @@ const TransactionsPage = () => {
               </>
             )}
           />
-        </div>
-        <div className="lg:col-span-1">
-          <div className="lg:sticky lg:top-24">
-            <AddTransaction />
-          </div>
         </div>
       </div>
       {editingTransaction && (
